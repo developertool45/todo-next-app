@@ -9,7 +9,7 @@ export function QueryProvider({ children }) {
     const [queryClient] = useState(() => new QueryClient());
     return (
       <QueryClientProvider client={queryClient}>
-        <Toaster position="top-right" />
+        <Toaster position="bottom-right" />
         {children}
       </QueryClientProvider>
     );

@@ -1,12 +1,12 @@
 "use server";
 import connectDB from "@/lib/db";
-import Todo from "@/models/Todo";
+import Todo from "@/model/todo";
 import { revalidatePath } from "next/cache";
-import { createTodoSchema } from "./validations/todo";
+import { createTodoSchema } from "@/validations/todo";
 
 export async function createtodo(data) {
     try {
-        const validatedData = await createTodoSchema.parse(data);
+        const validatedData = createTodoSchema.parse(data);
         await connectDB();
         const todo = await Todo.create(validatedData);
         revalidatePath("/");

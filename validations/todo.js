@@ -6,8 +6,8 @@ export const createTodoSchema = z.object({
         .string()
             .min(1, "Title is required")
             .max(255, "Title is too long")
-            .trim()
-            .required(),
+            .trim(),
+            
     description:
         z
         .string()

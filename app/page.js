@@ -1,6 +1,6 @@
 import TodoForm from "@/components/todo-form";
 import { Button } from "@/components/ui/button";
-import connectDB from "@/lib/db";
+import connectDB from "@/lib/db"; 
 
 export default async function Home() {
   await connectDB();
@@ -17,7 +17,7 @@ export default async function Home() {
           <TodoForm />
         </main>
 
-        <footer className="mt-12 tetxt-center text-sm text-muted-foreground">
+        <footer className="mt-12 text-center text-sm text-muted-foreground">
           <p>This app demostrates CRUD operation with modren React patterns</p>
         </footer>
       </div>
