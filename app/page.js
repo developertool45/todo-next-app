@@ -1,4 +1,6 @@
+import TodoFilter from "@/components/todo-filter";
 import TodoForm from "@/components/todo-form";
+import TodoList from "@/components/todo-list";
 import { Button } from "@/components/ui/button";
 import connectDB from "@/lib/db"; 
 
@@ -15,6 +17,8 @@ export default async function Home() {
         </header>
         <main>
           <TodoForm />
+          <TodoFilter/>
+          <TodoList/>
         </main>
 
         <footer className="mt-12 text-center text-sm text-muted-foreground">
