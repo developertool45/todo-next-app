@@ -6,22 +6,33 @@ import { Checkbox } from './ui/checkbox';
 import { Badge } from './ui/badge';
 import { Trash2, Calendar, Clock } from 'lucide-react';
 import { cn } from '@/lib/utils';
-
+import { useToggleTodo } from "@/hooks/use-create-todo";
 
 const TodoItem = ({ todo }) => {
   const [isDeleting, setIsDeleting] = useState(false);
-  const getPriorityColor =(priority) => {
-    switch (priority) {
-      case 'high':
-        return 'bg-red-100 text-red-600 dark:bg-red-900 dark:text-red-200';
-      case 'medium':
-        return 'bg-yellow-100 text-yellow-600 dark:bg-yellow-900 dark:text-yellow-200';
-      case 'low':
-        return 'bg-green-100 text-green-600 dark:bg-green-900 dark:text-green-200';
-      default:
-        return 'bg-gray-100 text-gray-600 dark:bg-gray-900 dark:text-gray-200';
+  const toggleMutation = useToggleTodo();
+  const handleToggle = async () => {
+    try {
+      const result = await toggleMutation.mutateAsync(todo._id);
+      if (!result.success) {
+        toast.error(result.error || "Something went wrong while updating todo");
+      }
+    } catch (error) {
+      toast.error("Something went wrong while updating todo");
     }
-  }
+  };
+  const getPriorityColor = (priority) => {
+    switch (priority) {
+      case "high":
+        return "bg-red-100 text-red-600 dark:bg-red-900 dark:text-red-200";
+      case "medium":
+        return "bg-yellow-100 text-yellow-600 dark:bg-yellow-900 dark:text-yellow-200";
+      case "low":
+        return "bg-green-100 text-green-600 dark:bg-green-900 dark:text-green-200";
+      default:
+        return "bg-gray-100 text-gray-600 dark:bg-gray-900 dark:text-gray-200";
+    }
+  };
   return (
     <Card
       className={cn(
@@ -33,7 +44,7 @@ const TodoItem = ({ todo }) => {
         <div className="flex align-top gap-2">
           <Checkbox
             checked={todo.completed}
-            onCheckedChange={() => {}}
+            onCheckedChange={handleToggle}
             disabled={false}
             className={"mt-1"}
           />
@@ -57,23 +68,23 @@ const TodoItem = ({ todo }) => {
             >
               {todo.description}
             </p>
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-2">
-            <Calendar size={16} />
-            <span className="text-sm text-muted-foreground">
-              {new Date(todo.createdAt).toLocaleDateString()}
-            </span>
-          </div>
-          <div className="flex items-center gap-2">
-            <Clock size={16} />
-            <span className="text-sm text-muted-foreground">
-              {new Date(todo.createdAt).toLocaleTimeString()}
-            </span>
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2">
+                <Calendar size={16} />
+                <span className="text-sm text-muted-foreground">
+                  {new Date(todo.createdAt).toLocaleDateString()}
+                </span>
               </div>
+              <div className="flex items-center gap-2">
+                <Clock size={16} />
+                <span className="text-sm text-muted-foreground">
+                  {new Date(todo.createdAt).toLocaleTimeString()}
+                </span>
+              </div>
+            </div>
           </div>
         </div>
-        </div>
-        <div className="flex items-center gap-2">          
+        <div className="flex items-center gap-2">
           <Button
             size="icon"
             variant="ghost"
@@ -87,6 +98,6 @@ const TodoItem = ({ todo }) => {
       </CardContent>
     </Card>
   );
-}
+};
 
 export default TodoItem

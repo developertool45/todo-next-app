@@ -12,6 +12,9 @@ export const useTodoStore = create(
 			addTodo: (todo) => set((state) => ({
 				todos: [...state.todos, todo]
 			})),
+			updateTodo: (id, updates) => set((state) => ({
+				todos:state.todos.map((todo)=>todo._id === id ? {...todo, ...updates} : todo)
+			})),
 			setFilter: (filter) => set({ filter }),
 			setIsLoading: (isLoading) => set({ isLoading }),
 			filteredTodos: () => {
