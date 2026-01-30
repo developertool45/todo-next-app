@@ -6,11 +6,25 @@ import { Checkbox } from './ui/checkbox';
 import { Badge } from './ui/badge';
 import { Trash2, Calendar, Clock } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { useToggleTodo } from "@/hooks/use-create-todo";
+import { useDeleteTodo, useToggleTodo } from "@/hooks/use-create-todo";
+import { toast } from "sonner";
 
 const TodoItem = ({ todo }) => {
-  const [isDeleting, setIsDeleting] = useState(false);
   const toggleMutation = useToggleTodo();
+
+  const deleteMution = useDeleteTodo();
+  const deleteTodo = async () => {
+    try {
+      const result = await deleteMution.mutateAsync(todo._id);
+      if (result.success) {
+        toast.success("Todo deleted successfully");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("Something went wrong while deleting todo");
+    }
+  };
+
   const handleToggle = async () => {
     try {
       const result = await toggleMutation.mutateAsync(todo._id);
@@ -86,10 +100,15 @@ const TodoItem = ({ todo }) => {
         </div>
         <div className="flex items-center gap-2">
           <Button
-            size="icon"
+            size="sm"
             variant="ghost"
-            onClick={() => {}}
-            disabled={false}
+            onClick={deleteTodo}
+            disabled={deleteMution.isPending}
+            className={cn(
+              "h-8 w-8 p-0",
+              deleteMution.isPending &&
+                "bg-destructive text-destructive-foreground",
+            )}
           >
             <Trash2 size={16} />
             <span className="sr-only">Delete</span>
